@@ -1,6 +1,6 @@
 /**
  * Profiling + Datadog Skill
- * Runs profiling workload, captures metrics, and sends them to Datadog
+ * Runs profiling workload,   captures metrics, and sends them to Datadog
  */
 
 'use strict';
