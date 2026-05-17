@@ -21,7 +21,7 @@ jobs:
         uses: masci/datadog@v2
         with:
           api-key: ${{ secrets.DATADOG_API_KEY }}
-          datadog-site: "datadoghq.us" # Change to datadoghq.eu, us3.datadoghq.com, us5.datadoghq.com, etc.
+          datadog-site: "us5.datadoghq.com" # Change to datadoghq.eu, us3.datadoghq.com, us5.datadoghq.com, etc.
           metrics: |
             - type: "count"
               name: "github.actions.build_status"
