@@ -1,0 +1,14 @@
+{
+  "name": "profiling-demo",
+  "version": "1.0.0",
+  "description": "Heavy disk + network I/O demo for Node.js profiling",
+  "main": "index.js",
+  "scripts": {
+    "start":   "node index.js",
+    "build":   "node --prof index.js",
+    "prof":    "node --prof index.js",
+    "inspect": "node --inspect index.js",
+    "clinic":  "clinic doctor -- node index.js"
+  },
+  "engines": { "node": ">=18" }
+}
