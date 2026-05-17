@@ -1,0 +1,33 @@
+name: Commit Profiling
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  profiling:
+    name: Run profiling agent on commit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run profiling agent skill
+        run: node skills/profiling-agent.js --skill profiling
+
+      - name: Upload V8 profiling logs
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v8-profiling-logs
+          path: isolate-*.log
