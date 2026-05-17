@@ -3,7 +3,7 @@
  * Simulates disk writes, disk reads, and HTTP traffic concurrently.
  *
  * Usage:
- *   node index.js            # plain run
+ *   node index.js            # plain run 
  *   node --prof index.js     # V8 CPU profile (creates isolate-*.log)
  *   node --inspect index.js  # Chrome DevTools profiling
  */
@@ -14,9 +14,9 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { pipeline, Readable } = require('stream');
+const { pipeline, Readable } = require('stream'); 
 
-// ── Config ────────────────────────────────────────────────────────────────────
+// ── Config ─────────────────────────────────────0000───────────────────────────────
 const DISK_DIR        = path.join(__dirname, 'tmp');
 const FILE_COUNT      = 20;          // files written concurrently per wave
 const FILE_SIZE_MB    = 100;         // size of each file (increased to 100 MB)
