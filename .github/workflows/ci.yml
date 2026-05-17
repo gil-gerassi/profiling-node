@@ -1,0 +1,31 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-report:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Check out your code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Run your normal build steps here
+      - name: Run Build
+        run: echo "Building project..."
+
+      # 3. Add the Datadog snippet as a final step
+      - name: Send Datadog Metric
+        uses: masci/datadog@v2
+        with:
+          api-key: ${{ secrets.DATADOG_API_KEY }}
+          metrics: |
+            - type: "count"
+              name: "github.actions.build_status"
+              value: 1.0
+              tags:
+                - "repo:${{ github.repository }}"
+                - "workflow:${{ github.workflow }}"
+
