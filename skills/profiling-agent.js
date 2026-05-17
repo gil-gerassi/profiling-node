@@ -1,44 +1,42 @@
 #!/usr/bin/env node
 'use strict';
 
-const { spawn } = require('child_process');
-
-const supportedSkills = new Map([
-  ['profiling', { command: 'npm', args: ['run', 'prof'], description: 'Run Node.js profiling workload' }],
-]);
+const path = require('path');
 
 function parseArgs() {
   const skillFlag = '--skill';
   const index = process.argv.indexOf(skillFlag);
   if (index === -1 || index === process.argv.length - 1) {
-    console.error('Usage: node profiling-agent.js --skill profiling');
-    console.error('Supported skills:');
-    for (const [name, info] of supportedSkills) {
-      console.error(`  - ${name}: ${info.description}`);
-    }
+    console.error('Usage: node profiling-agent.js --skill <skillName>');
     process.exit(1);
   }
   return process.argv[index + 1];
 }
 
 async function run() {
-  const skill = parseArgs();
-  const metadata = supportedSkills.get(skill);
-  if (!metadata) {
-    console.error(`Unsupported skill: ${skill}`);
+  const skillName = parseArgs();
+
+  let skillModule;
+  try {
+    skillModule = require(path.join(__dirname, `${skillName}.js`));
+  } catch (err) {
+    console.error(`Error: skill '${skillName}' not found in skills/`);
     process.exit(1);
   }
 
-  console.log(`Agent: executing '${skill}' skill...`);
-  const child = spawn(metadata.command, metadata.args, { stdio: 'inherit', shell: false });
+  if (!skillModule || typeof skillModule.execute !== 'function') {
+    console.error(`Error: skill '${skillName}' does not export an async execute() function`);
+    process.exit(1);
+  }
 
-  child.on('close', (code) => {
-    if (code !== 0) {
-      console.error(`Agent: '${skill}' skill failed with exit code ${code}`);
-      process.exit(code);
-    }
-    console.log(`Agent: '${skill}' skill completed successfully.`);
-  });
+  try {
+    console.log(`[Agent] Executing skill: ${skillName}`);
+    const result = await skillModule.execute();
+    console.log(`[Agent] Skill '${skillName}' completed.`, result || 'no result');
+  } catch (err) {
+    console.error(`[Agent] Skill '${skillName}' failed: ${err && err.stack ? err.stack : err}`);
+    process.exit(1);
+  }
 }
 
 run().catch((err) => {

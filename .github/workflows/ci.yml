@@ -16,7 +16,7 @@ jobs:
       - name: Run Build
         run: echo "Building project..."
 
-      # 3. Add the Datadog snippet as a final step.   
+      # 3. Add the Datadog snippet as a final step
       - name: Send Datadog Metric
         uses: masci/datadog@v2
         with:
