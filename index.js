@@ -16,7 +16,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { pipeline, Readable } = require('stream'); 
 
-// ── Config ─────────────────────────────────────00───────────────────────────────
+// ── Config ─────────────────────────────────────────────────────────────────
 const DISK_DIR        = path.join(__dirname, 'tmp');
 const FILE_COUNT      = 20;          // files written concurrently per wave
 const FILE_SIZE_MB    = 100;         // size of each file (increased to 100 MB)
